@@ -1,0 +1,21 @@
+image: gitpod/workspace-full
+checkoutLocation: gitpod-k3s
+ports:
+  - port: 6600
+    visibility: public
+tasks:
+  - name: k3s
+    command: |
+      echo "Start load time, $(date)" >> .gitpod/timing
+      bash .gitpod/prepare-k3s.sh
+      bash create-user/get_remote_user.sh
+      echo "End load time, $(date)" >> .gitpod/timing
+  - name: qemu
+    before: |
+      bash .gitpod/install_req_apt.sh
+      bash .gitpod/prepare-rootfs.sh
+    command: |
+      bash .gitpod/qemu.sh
+  - name : k3s-proxy
+    command: |
+      docker run --rm --network host caddy caddy reverse-proxy --insecure --change-host-header --from :6600 --to https://127.0.0.1:6443

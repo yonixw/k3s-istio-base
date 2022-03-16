@@ -1,0 +1,18 @@
+apiVersion: v1
+clusters:
+- cluster:
+    server: https://6600-XXX1
+  name: XXX0
+contexts:
+- context:
+    cluster:  XXX0
+    namespace: default
+    user: deploy-robot
+  name:  XXX0
+current-context:  XXX0
+kind: Config
+preferences: {}
+users:
+- name: deploy-robot
+  user:
+    token: XXX2
